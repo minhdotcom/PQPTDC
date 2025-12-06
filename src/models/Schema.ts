@@ -1,5 +1,8 @@
+// /src/models/Schema.ts
+
 import {
   bigint,
+  numeric,
   pgTable,
   serial,
   text,
@@ -56,4 +59,26 @@ export const todoSchema = pgTable('todo', {
     .$onUpdate(() => new Date())
     .notNull(),
   createdAt: timestamp('created_at', { mode: 'date' }).defaultNow().notNull(),
+});
+
+export const anpr_records = pgTable('anpr_records', {
+  id: bigint('id', { mode: 'number' }).primaryKey().generatedByDefaultAsIdentity(),
+  created_at: timestamp('created_at').defaultNow(),
+
+  plate_wim: text('plate_wim'),
+  plate_camera: text('plate_camera'),
+  confidence_wim: numeric('confidence_wim', { precision: 5, scale: 2 }),
+  confidence_camera: numeric('confidence_camera', { precision: 5, scale: 2 }),
+
+  image_wim_url: text('image_wim_url'),
+  image_camera_url: text('image_camera_url'),
+  thumbnail_url: text('thumbnail_url'),
+
+  status: text('status').default('pending'),
+  accuracy_percent: numeric('accuracy_percent', { precision: 5, scale: 2 }),
+  reviewed_by: text('reviewed_by'),
+  reviewed_at: timestamp('reviewed_at'),
+  notes: text('notes'),
+
+  organization_id: text('organization_id'),
 });
