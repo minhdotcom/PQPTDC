@@ -1,8 +1,8 @@
 // /src/app/[locate]/auth/dashboard/page.tsx
 
 import { desc, eq } from 'drizzle-orm';
-import Image from 'next/image';
 
+import RecordRow from '@/features/dashboard/RecordRow';
 import { db } from '@/libs/DB';
 import { getFilteredOrganizationId } from '@/libs/Permissions';
 import { anpr_records } from '@/models/Schema';
@@ -10,99 +10,54 @@ import { anpr_records } from '@/models/Schema';
 export default async function DashboardPage() {
   const orgId = await getFilteredOrganizationId();
 
-  // Build query with organization filter
-  let query = db
+  // 1. Tạo câu query gốc (Base Query)
+  // TypeScript sẽ hiểu rõ kiểu dữ liệu của biến này ngay từ đầu
+  const baseQuery = db
     .select()
     .from(anpr_records)
     .orderBy(desc(anpr_records.created_at))
     .limit(50);
 
-  // If not admin, filter by organization
-  if (orgId) {
-    query = query.where(eq(anpr_records.organization_id, orgId)) as any;
-  }
-
-  const records = await query;
+  // 2. Logic phân nhánh:
+  // Nếu có orgId -> nối thêm where. Nếu không -> chạy baseQuery gốc.
+  // Cách này đảm bảo Type Safety tuyệt đối mà không cần dùng "any"
+  const records = orgId
+    ? await baseQuery.where(eq(anpr_records.organization_id, orgId))
+    : await baseQuery;
 
   return (
     <div className="p-10">
-      <h1 className="mb-8 text-center text-4xl font-bold">
+      <h1 className="mb-8 text-3xl font-bold text-gray-800">
         ANPR Verification Records
       </h1>
 
-      <div className="overflow-hidden rounded-xl bg-white shadow-lg">
+      <div className="overflow-hidden rounded-xl border border-gray-100 bg-white shadow-lg">
         <table className="min-w-full divide-y divide-gray-200">
-          <thead className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
+          <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-4 text-left text-sm font-semibold">STT</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold">ID</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold">Thời gian</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold">Biển WIM</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold">Biển Camera</th>
-              <th className="px-6 py-4 text-center text-sm font-semibold">Thumbnail</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold">KQ kiểm định</th>
-              <th className="px-6 py-4 text-left text-sm font-semibold">Trạng thái</th>
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">STT</th>
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">ID</th>
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Thời gian</th>
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Biển WIM</th>
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Biển Camera</th>
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Thumbnail</th>
+              <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">KQ Kiểm định</th>
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Trạng thái</th>
             </tr>
           </thead>
-          <tbody className="divide-y divide-gray-200">
+          <tbody className="divide-y divide-gray-200 bg-white">
             {records.map((r, i) => (
-              <tr key={r.id} className="transition hover:bg-gray-50">
-                <td className="px-6 py-4 text-sm font-medium">{i + 1}</td>
-                <td className="px-6 py-4 font-mono text-sm text-gray-500">
-                  #
-                  {r.id}
-                </td>
-                <td className="px-6 py-4 text-sm">
-                  {r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : '-'}
-                </td>
-                <td className="px-6 py-4 text-sm font-semibold text-blue-700">{r.plate_wim}</td>
-                <td className="px-6 py-4 text-sm font-semibold text-green-700">{r.plate_camera}</td>
-                <td className="px-6 py-4">
-                  {r.thumbnail_url
-                    ? (
-                        <Image
-                          src={r.thumbnail_url}
-                          alt="thumb"
-                          width={120}
-                          height={80}
-                          className="rounded-lg object-cover shadow"
-                        />
-                      )
-                    : (
-                        <span className="text-xs text-gray-400">No image</span>
-                      )}
-                </td>
-                <td className="px-6 py-4 text-center">
-                  {r.is_accurate === null
-                    ? (
-                        <span className="text-xs text-gray-400">Chưa kiểm định</span>
-                      )
-                    : r.is_accurate
-                      ? (
-                          <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-bold text-green-800">
-                            Đúng
-                          </span>
-                        )
-                      : (
-                          <span className="rounded-full bg-red-100 px-3 py-1 text-xs font-bold text-red-800">
-                            Sai
-                          </span>
-                        )}
-                </td>
-                <td className="px-6 py-4">
-                  <span
-                    className={`rounded-full px-4 py-2 text-xs font-bold ${
-                      r.status === 'approved'
-                        ? 'bg-green-100 text-green-800'
-                        : r.status === 'pending'
-                          ? 'bg-yellow-100 text-yellow-800'
-                          : 'bg-blue-100 text-blue-800'
-                    }`}
-                  >
-                    {r.status || 'pending'}
-                  </span>
-                </td>
-              </tr>
+              <RecordRow
+                key={r.id}
+                index={i}
+                id={r.id}
+                created_at={r.created_at}
+                plate_wim={r.plate_wim}
+                plate_camera={r.plate_camera}
+                thumbnail_url={r.thumbnail_url}
+                is_accurate={r.is_accurate}
+                status={r.status}
+              />
             ))}
           </tbody>
         </table>
