@@ -2,6 +2,7 @@
 
 import {
   bigint,
+  boolean,
   numeric,
   pgTable,
   serial,
@@ -75,9 +76,13 @@ export const anpr_records = pgTable('anpr_records', {
   thumbnail_url: text('thumbnail_url'),
 
   status: text('status').default('pending'),
-  accuracy_percent: numeric('accuracy_percent', { precision: 5, scale: 2 }),
+  is_accurate: boolean('is_accurate'),
+  inspected_by: text('inspected_by'),
+  inspected_at: timestamp('inspected_at'),
   reviewed_by: text('reviewed_by'),
   reviewed_at: timestamp('reviewed_at'),
+  approved_by: text('approved_by'),
+  approved_at: timestamp('approved_at'),
   notes: text('notes'),
 
   organization_id: text('organization_id'),

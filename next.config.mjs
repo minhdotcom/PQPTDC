@@ -1,3 +1,5 @@
+// next.config.mjs
+
 import { fileURLToPath } from 'node:url';
 
 import withBundleAnalyzer from '@next/bundle-analyzer';
@@ -26,6 +28,18 @@ export default withSentryConfig(
       reactStrictMode: true,
       experimental: {
         serverComponentsExternalPackages: ['@electric-sql/pglite'],
+      },
+      images: {
+        remotePatterns: [
+          {
+            protocol: 'https',
+            hostname: 'i.imgur.com',
+          },
+          {
+            protocol: 'https',
+            hostname: 'picsum.photos',
+          },
+        ],
       },
     }),
   ),

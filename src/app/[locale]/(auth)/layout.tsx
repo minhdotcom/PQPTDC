@@ -1,9 +1,13 @@
+// /src/app/[locate]/(auth)/layout.tsx
+
 'use client';
 
 import { enUS, frFR } from '@clerk/localizations';
 import { ClerkProvider } from '@clerk/nextjs';
 
 import { AppConfig } from '@/utils/AppConfig';
+// import { auth } from '@clerk/nextjs/server';
+// import layout from '../layout';
 
 export default function AuthLayout(props: {
   children: React.ReactNode;

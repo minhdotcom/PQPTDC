@@ -8,6 +8,13 @@
       "when": 1726784321202,
       "tag": "0000_init-db",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1765016662924,
+      "tag": "0001_orange_weapon_omega",
+      "breakpoints": true
     }
   ]
 }
