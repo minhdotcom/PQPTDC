@@ -35,6 +35,7 @@ export default async function DashboardPage() {
           <thead className="bg-gradient-to-r from-blue-600 to-indigo-600 text-white">
             <tr>
               <th className="px-6 py-4 text-left text-sm font-semibold">STT</th>
+              <th className="px-6 py-4 text-left text-sm font-semibold">ID</th>
               <th className="px-6 py-4 text-left text-sm font-semibold">Thời gian</th>
               <th className="px-6 py-4 text-left text-sm font-semibold">Biển WIM</th>
               <th className="px-6 py-4 text-left text-sm font-semibold">Biển Camera</th>
@@ -47,6 +48,10 @@ export default async function DashboardPage() {
             {records.map((r, i) => (
               <tr key={r.id} className="transition hover:bg-gray-50">
                 <td className="px-6 py-4 text-sm font-medium">{i + 1}</td>
+                <td className="px-6 py-4 font-mono text-sm text-gray-500">
+                  #
+                  {r.id}
+                </td>
                 <td className="px-6 py-4 text-sm">
                   {r.created_at ? new Date(r.created_at).toLocaleString('vi-VN') : '-'}
                 </td>
