@@ -2,6 +2,7 @@ import { eq } from 'drizzle-orm';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 
+import RecordActionButtons, { ApproveButton } from '@/features/dashboard/RecordActionButtons';
 import { db } from '@/libs/DB';
 import { canApprove, canEditAccuracy } from '@/libs/Permissions';
 import { anpr_records } from '@/models/Schema';
@@ -60,13 +61,7 @@ export default async function RecordDetailPage({
 
         {/* Chỉ hiện nút Duyệt nếu là Manager/Admin */}
         {showApprove && (
-          // FIX 2: Thêm type="button"
-          <button
-            type="button"
-            className="rounded-lg bg-blue-600 px-6 py-2 font-semibold text-white shadow transition hover:bg-blue-700"
-          >
-            ✓ Phê Duyệt Ngay
-          </button>
+          <ApproveButton recordId={record.id} />
         )}
       </div>
 
@@ -174,21 +169,10 @@ export default async function RecordDetailPage({
               </div>
 
               {/* ACTION ZONE */}
-              {showEdit && (
-                <div className="mt-4 border-t pt-4">
-                  <p className="mb-2 text-xs font-bold uppercase text-blue-600">Khu vực Inspector</p>
-                  <div className="grid grid-cols-2 gap-2">
-                    {/* FIX 2: Thêm type="button" */}
-                    <button type="button" className="flex items-center justify-center gap-2 rounded border border-green-500 bg-white py-2 font-medium text-green-700 transition hover:bg-green-50">
-                      ✅ Đúng
-                    </button>
-                    {/* FIX 2: Thêm type="button" */}
-                    <button type="button" className="flex items-center justify-center gap-2 rounded border border-red-500 bg-white py-2 font-medium text-red-700 transition hover:bg-red-50">
-                      ❌ Sai
-                    </button>
-                  </div>
-                </div>
-              )}
+              <RecordActionButtons
+                recordId={record.id}
+                showEdit={showEdit}
+              />
             </div>
           </div>
 

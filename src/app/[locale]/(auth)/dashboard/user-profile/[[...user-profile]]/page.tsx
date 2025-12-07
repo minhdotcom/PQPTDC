@@ -1,36 +1,30 @@
 // src/app/[locale]/(auth)/dashboard/user-profile/[[...user-profile]]/page.tsx
 
 import { UserProfile } from '@clerk/nextjs';
-import { auth } from '@clerk/nextjs/server';
-// 1. Đổi import từ hook sang server function
+// Import currentUser
+import { currentUser } from '@clerk/nextjs/server';
 import { getTranslations } from 'next-intl/server';
 
-// Component Import
 import { TitleBar } from '@/features/dashboard/TitleBar';
 import { getI18nPath } from '@/utils/Helpers';
 
 const UserProfilePage = async (props: { params: { locale: string } }) => {
-  // 2. Dùng await getTranslations thay vì useTranslations
   const t = await getTranslations({ locale: props.params.locale, namespace: 'UserProfile' });
 
-  // Fetch data từ Server
-  const { sessionClaims } = await auth();
+  // Dùng currentUser() thay vì auth()
+  const user = await currentUser();
 
-  // Ép kiểu an toàn
-  const publicMetadata = (sessionClaims?.publicMetadata || {}) as {
+  // Ép kiểu an toàn (Lấy từ user.publicMetadata thay vì sessionClaims)
+  const publicMetadata = (user?.publicMetadata || {}) as {
     role?: string;
     organization_id?: string;
   };
 
   return (
     <>
-      <TitleBar
-        title={t('title_bar')}
-        description={t('title_bar_description')}
-      />
+      <TitleBar title={t('title_bar')} description={t('title_bar_description')} />
 
       <div className="mx-auto grid max-w-5xl grid-cols-1 gap-8 lg:grid-cols-3">
-        {/* Cột chính: Clerk UserProfile */}
         <div className="lg:col-span-2">
           <UserProfile
             routing="path"
@@ -45,7 +39,6 @@ const UserProfilePage = async (props: { params: { locale: string } }) => {
           />
         </div>
 
-        {/* Cột phụ: Role + Organization */}
         <div className="lg:col-span-1">
           <div className="sticky top-6 rounded-xl border bg-white p-6 shadow-sm">
             <h3 className="mb-6 border-b pb-2 text-lg font-bold text-gray-900">
@@ -53,7 +46,7 @@ const UserProfilePage = async (props: { params: { locale: string } }) => {
             </h3>
             <div className="space-y-6">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                <span className="block text-xs font-semibold uppercase tracking-wider text-gray-500">
                   Vai trò (Role)
                 </span>
                 <div className="mt-2">
@@ -71,7 +64,7 @@ const UserProfilePage = async (props: { params: { locale: string } }) => {
               </div>
 
               <div>
-                <span className="text-xs font-semibold uppercase tracking-wider text-gray-500">
+                <span className="block text-xs font-semibold uppercase tracking-wider text-gray-500">
                   Đơn vị quản lý
                 </span>
                 <div className="mt-2">
