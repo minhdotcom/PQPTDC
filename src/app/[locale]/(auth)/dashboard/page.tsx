@@ -1,4 +1,4 @@
-// /src/app/[locate]/auth/dashboard/page.tsx
+// /src/app/[locate]/(auth)/dashboard/page.tsx
 
 import { desc, eq } from 'drizzle-orm';
 
@@ -7,20 +7,22 @@ import { db } from '@/libs/DB';
 import { getFilteredOrganizationId } from '@/libs/Permissions';
 import { anpr_records } from '@/models/Schema';
 
+// ĐÃ XÓA: import AccuracyToggle ...
+// ĐÃ XÓA: import { getUserRole } ...
+
 export default async function DashboardPage() {
   const orgId = await getFilteredOrganizationId();
 
+  // ĐÃ XÓA: đoạn lấy role và check isInspectorOrManager ...
+
   // 1. Tạo câu query gốc (Base Query)
-  // TypeScript sẽ hiểu rõ kiểu dữ liệu của biến này ngay từ đầu
   const baseQuery = db
     .select()
     .from(anpr_records)
-    .orderBy(desc(anpr_records.created_at))
+    .orderBy(desc(anpr_records.created_at), desc(anpr_records.id))
     .limit(50);
 
-  // 2. Logic phân nhánh:
-  // Nếu có orgId -> nối thêm where. Nếu không -> chạy baseQuery gốc.
-  // Cách này đảm bảo Type Safety tuyệt đối mà không cần dùng "any"
+  // 2. Logic phân nhánh
   const records = orgId
     ? await baseQuery.where(eq(anpr_records.organization_id, orgId))
     : await baseQuery;
@@ -35,7 +37,6 @@ export default async function DashboardPage() {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">STT</th>
               <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">ID</th>
               <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Thời gian</th>
               <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Biển WIM</th>
@@ -46,10 +47,9 @@ export default async function DashboardPage() {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {records.map((r, i) => (
+            {records.map(r => (
               <RecordRow
                 key={r.id}
-                index={i}
                 id={r.id}
                 created_at={r.created_at}
                 plate_wim={r.plate_wim}
@@ -57,6 +57,7 @@ export default async function DashboardPage() {
                 thumbnail_url={r.thumbnail_url}
                 is_accurate={r.is_accurate}
                 status={r.status}
+                // ĐÃ XÓA: isInspector={...} vì quay về bản cũ RecordRow tự lo liệu (hoặc chưa cần)
               />
             ))}
           </tbody>
