@@ -6,6 +6,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 
 import AccuracyCell from './AccuracyCell';
+import ApproveButton from './ApproveButton';
 
 type Props = {
   id: number;
@@ -16,6 +17,7 @@ type Props = {
   is_accurate: boolean | null;
   status: string | null;
   canEdit: boolean;
+  canApprove: boolean; // ← THÊM
 };
 
 export default function RecordRowClient({
@@ -27,11 +29,14 @@ export default function RecordRowClient({
   is_accurate,
   status,
   canEdit,
+  canApprove, // ← THÊM
 }: Props) {
   const router = useRouter();
 
+  // console.log('RecordRowClient:', { id, status, canApprove }); // ← THÊM
+
   const handleClick = () => {
-    router.push(`/dashboard/${id}`); // ✅ ĐÚNG syntax
+    router.push(`/dashboard/${id}`);
   };
 
   return (
@@ -79,13 +84,23 @@ export default function RecordRowClient({
           className={`rounded-full border px-3 py-1 text-xs font-bold ${
             status === 'approved'
               ? 'border-green-200 bg-green-100 text-green-800'
-              : status === 'reviewed'
+              : status === 'inspected'
                 ? 'border-blue-200 bg-blue-100 text-blue-800'
-                : 'border-yellow-200 bg-yellow-50 text-yellow-800'
+                : status === 'rejected'
+                  ? 'border-red-200 bg-red-100 text-red-800'
+                  : 'border-yellow-200 bg-yellow-50 text-yellow-800'
           }`}
         >
           {(status || 'PENDING').toUpperCase()}
         </span>
+      </td>
+      {/* ← THÊM CỘT MỚI */}
+      <td className="px-6 py-4 text-center">
+        <ApproveButton
+          recordId={id}
+          currentStatus={status}
+          canApprove={canApprove}
+        />
       </td>
     </tr>
   );

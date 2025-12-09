@@ -1,6 +1,5 @@
 // src/libs/Permissions.ts
 
-// 👇 QUAN TRỌNG: Đổi import từ auth sang currentUser
 import { currentUser } from '@clerk/nextjs/server';
 
 export type UserRole = 'admin' | 'manager' | 'inspector' | 'staff';
@@ -11,7 +10,6 @@ type UserMetadata = {
 };
 
 export async function getCurrentUser(): Promise<UserMetadata | null> {
-  // 👇 QUAN TRỌNG: Gọi thẳng lên Server Clerk lấy data mới nhất
   const user = await currentUser();
 
   if (!user) {

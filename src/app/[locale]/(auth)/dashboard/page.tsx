@@ -44,6 +44,7 @@ export default async function DashboardPage() {
               <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Thumbnail</th>
               <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">KQ Kiểm định</th>
               <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Trạng thái</th>
+              <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">Hành động</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">

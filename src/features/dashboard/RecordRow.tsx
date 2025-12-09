@@ -1,6 +1,6 @@
 // /src/features/dashboard/RecordRow.tsx
 
-import { canEditAccuracy } from '@/libs/Permissions';
+import { canApprove, canEditAccuracy } from '@/libs/Permissions';
 
 import RecordRowClient from './RecordRowClient';
 
@@ -16,8 +16,13 @@ type IRecordRowProps = {
 
 export default async function RecordRow(props: IRecordRowProps) {
   const canEdit = await canEditAccuracy();
+  const canApproveRecord = await canApprove();
 
   return (
-    <RecordRowClient {...props} canEdit={canEdit} />
+    <RecordRowClient
+      {...props}
+      canEdit={canEdit}
+      canApprove={canApproveRecord}
+    />
   );
 }
