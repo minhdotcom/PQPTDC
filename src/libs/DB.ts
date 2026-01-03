@@ -14,6 +14,10 @@ import * as schema from '@/models/Schema';
 
 import { Env } from './Env';
 
+// THÊM DÒNG NÀY ĐỂ DEBUG
+// console.log('🔍 DATABASE_URL from Env:', Env.DATABASE_URL);
+// console.log('🔍 DATABASE_URL from process.env:', process.env.DATABASE_URL);
+
 let client;
 let drizzle;
 
