@@ -70,7 +70,7 @@ export function ApproveButton({ recordId }: { recordId: number }) {
       disabled={isPending}
       className="rounded-lg bg-blue-600 px-6 py-2 font-semibold text-white shadow transition hover:bg-blue-700 disabled:opacity-50"
     >
-      {isPending ? 'Đang lưu...' : '✓ Phê Duyệt Ngay'}
+      {isPending ? 'Đang lưu...' : '✓ Phê Duyệt'}
     </button>
   );
 }

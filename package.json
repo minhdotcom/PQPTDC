@@ -23,7 +23,8 @@
     "storybook:serve": "http-server storybook-static --port 6006 --silent",
     "serve-storybook": "run-s storybook:*",
     "test-storybook:ci": "start-server-and-test serve-storybook http://127.0.0.1:6006 test-storybook",
-    "prepare": "husky"
+    "prepare": "husky",
+    "db:seed": "node --import tsx --no-warnings --env-file=.env prisma/seed.ts"
   },
   "dependencies": {
     "@clerk/localizations": "^3.14.2",
@@ -91,6 +92,8 @@
     "@types/node": "^22.7.6",
     "@types/pg": "^8.11.10",
     "@types/react": "^18.3.11",
+    "@typescript-eslint/eslint-plugin": "^8.51.0",
+    "@typescript-eslint/parser": "^8.51.0",
     "@vitejs/plugin-react": "^4.3.2",
     "@vitest/coverage-v8": "^2.1.9",
     "@vitest/expect": "^2.1.9",

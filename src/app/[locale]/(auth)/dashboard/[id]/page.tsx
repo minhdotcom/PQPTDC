@@ -72,7 +72,7 @@ export default async function RecordDetailPage({
           {/* Ảnh WIM */}
           <div className="rounded-xl border bg-white p-4 shadow">
             <h3 className="mb-3 flex justify-between font-semibold text-gray-700">
-              <span>📸 Ảnh từ hệ thống cân (WIM)</span>
+              <span>📸 Ảnh 1</span>
               <span className="font-mono text-blue-600">{record.plate_wim}</span>
             </h3>
             <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-100">
@@ -103,7 +103,7 @@ export default async function RecordDetailPage({
           {/* Ảnh Camera */}
           <div className="rounded-xl border bg-white p-4 shadow">
             <h3 className="mb-3 flex justify-between font-semibold text-gray-700">
-              <span>📸 Ảnh từ Camera nhận diện</span>
+              <span>📸 Ảnh 2</span>
               <span className="font-mono text-green-600">{record.plate_camera}</span>
             </h3>
             <div className="relative aspect-video overflow-hidden rounded-lg bg-gray-100">
@@ -144,7 +144,7 @@ export default async function RecordDetailPage({
             <div className="space-y-4">
               <div>
                 {/* FIX 4: Đổi label thành span */}
-                <span className="block text-xs font-semibold uppercase text-gray-500">Trạng thái chính xác</span>
+                <span className="block text-xs font-semibold uppercase text-gray-500"> </span>
                 <div className="mt-2">
                   {record.is_accurate === null
                     ? (

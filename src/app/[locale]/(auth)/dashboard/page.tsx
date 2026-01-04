@@ -39,16 +39,16 @@ export default async function DashboardPage() {
             <tr>
               <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">ID</th>
               <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Thời gian</th>
-              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Biển WIM</th>
-              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Biển Camera</th>
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Kết quả 1</th>
+              <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Kết quả 2</th>
               <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Thumbnail</th>
               <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">KQ Kiểm định</th>
               <th className="px-6 py-4 text-left text-xs font-bold uppercase tracking-wider text-gray-500">Trạng thái</th>
-              <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">Hành động</th>
+              <th className="px-6 py-4 text-center text-xs font-bold uppercase tracking-wider text-gray-500">Phê duyệt</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200 bg-white">
-            {records.map(r => (
+            {records.map((r: any) => (
               <RecordRow
                 key={r.id}
                 id={r.id}
